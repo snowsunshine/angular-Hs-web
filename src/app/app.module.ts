@@ -1,22 +1,28 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NgZorroAntdModule, NZ_I18N, NZ_ICONS, en_US } from 'ng-zorro-antd';
-import { IconDefinition } from '@ant-design/icons-angular';
-import * as AllIcons from '@ant-design/icons-angular/icons'
+import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
-import en from '@angular/common/locales/en';
+import zh from '@angular/common/locales/zh';
 
-registerLocaleData(en);
+// modules
+import { AppRoutingModule } from './app-routing.module';
+import { SetupModule } from './pages/setup/setup.module';
+import { MainModule } from './pages/main/main.module';
 
-const antDesignIcons = AllIcons as {
-  [key: string]: IconDefinition;
-};
-const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
+// services
+import { LocalStorageService } from './services/local-storage/local-storage.service';
+import { ListService } from './services/list/list.service';
+import { TodoService } from './services/todo/todo.service';
+import { InitGuardService } from './services/init-guard/init-guard.service';
+import { SummaryModule } from './pages/summary/summary.module';
+import { SettingModule } from './pages/setting/setting.module';
+
+registerLocaleData(zh);
 
 @NgModule({
   declarations: [
@@ -27,12 +33,21 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
-    NgZorroAntdModule
+    NgZorroAntdModule,
+    AppRoutingModule,
+    SetupModule,
+    MainModule,
+    SummaryModule,
+    SettingModule
   ],
   providers: [
-    { provide: NZ_I18N, useValue: en_US },
-    { provide: NZ_ICONS, useValue: icons }
+    { provide: LOCALE_ID, useValue: 'zh-Hans' },
+    { provide: NZ_I18N, useValue: zh_CN },
+    LocalStorageService,
+    ListService,
+    TodoService,
+    InitGuardService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }
